@@ -80,7 +80,7 @@ function renderFileName(fileName) {
 
 const headers = {
   'Content-Type': 'application/json',
-  'X-Api-Key': 'keyGoesHere',
+  'X-Api-Key': '',
 };
 
 const layout = document.querySelector('.layout');
@@ -92,16 +92,15 @@ setInterval(() => {
       renderTemperatures(temperature.tool0, temperature.bed);
       if (flags.printing) {
         layout.classList.add('printing');
-        fetch('https://octopi/api/job', { headers })
+        fetch('http://octopi/api/job', { headers })
           .then((r) => r.json())
           .then(({ job, progress }) => {
-            renderTimings(progress.printTime, progress.printTimeLieft);
-            renderProgress(Math.round(progress.completion * 100));
+            renderTimings(progress.printTime, progress.printTimeLeft);
+            renderProgress(Math.round(progress.completion));
             renderFileName(job.file.name);
           });
       } else {
-        layout.classList.add('printing');
-        // layout.classList.remove('printing');
+        layout.classList.remove('printing');
       }
     });
 }, 2000);
